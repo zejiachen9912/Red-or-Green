@@ -1,0 +1,445 @@
+---
+title: "Green or Red? Assessing the Impact of Dietary Prefrence to Academic Performance"
+author: "Zejia Chen"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  rmdformats::readthedown:
+    code_folding: show
+    self_contained: true
+    thumbnails: true
+    lightbox: true
+    gallery: false
+    highlight: tango
+  html_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(rmdformats)
+library(tidyverse)
+library(kableExtra)
+library(janitor)
+library(plotly)
+## Load your packages here , your packages will be hidden but make sure that you mention which packages you used in your document
+```
+
+![](/Users/zejiachen/Library/Mobile Documents/com~apple~CloudDocs/fall 2020 /ECON 220 lab/final project/optimize.jpeg){width=80%}
+
+# Introduction and motivation:
+
+I am a strong believer that consistent diet impact not only student's physical health, but prepare them to be successful in school as well. Good nutrition contributes to healthy growth and development, chronic disease prevention, strong school performance and positive behavior among the youth. Significant researches has done on this topic, stressing the importance of healthy diet pertaining students' school performance. For example, [an reseach article by American School Health association in 2008](https://onlinelibrary.wiley.com/doi/pdf/10.1111/j.1746-1561.2008.00288.x), demonstrate the an association between diet quality and academic performance in which Students with an increased fruit and vegetable intake and lower caloric intake of fat were significantly less likely to fail the tests and assessments.
+
+Students reporting increased diet quality were significantly less likely to fail the literacy assessment:![](/Users/zejiachen/Library/Mobile Documents/com~apple~CloudDocs/fall 2020 /ECON 220 lab/final project/research.png){width=80%}
+
+While I totally have my back against healthy diets, incessant debates regarding being a vegetarian/vegan in the past few years have caught my attention. Numinous researches directly connect being a vegetarian to strong school performances and economic well-beings, and advocating others to change their dietary preference. Personally, as a huge meat-lover, I am little skeptical about how becoming a vegetarian or vegan can directly impact students' school performances. Having a health diet does not necessarily mean someone has to become a vegetarian/vegan. Plus meats contain profuse beneficial trace elements which we cannot directly absorb from vegetables which might inversely harm our physical and mental health, if we do not choose to consume.
+
+A [research article in respect of physical and academic performance of vegetarian and non-vegetarian school girl conducted in India](https://pdfs.semanticscholar.org/9883/591af9a3007c085fac2df2be0e5bbc16147d.pdf) makes me even more concern about the validity of the correlation between vegetarian and scholastic performance. While it is obvious and perceivable that non-vegetarian girls outperform vegetarian girl physically, the study suggests that insignificant difference was found between the academic and physical performance of both the groups.
+
+Grade Comparison between veg and non-veg: ![](/Users/zejiachen/Library/Mobile Documents/com~apple~CloudDocs/fall 2020 /ECON 220 lab/final project/study.png){width=60%}
+
+The study reveals that 32% non-vegetarian got higher scores followed by 26% of vegetarian. At the same time, about 6% more of non-vegetarian get a lower score than the vegetarian. It seems like indeed there is no significant correlation between test scores and diets preference, and we have reasons to believe the some of the differences are cause by noises and omitted variables. 
+
+As a result, I am extremely interested in and would love to utilize this research opportunity to find out how being a vegetarian/vegan will affect students' everyday diets habits and further impact their academic performances.
+
+# Hypotheses
+My Hypotheses are as followed : 
+
+Hypothesis | Description  
+-----------|-------------
+Null      | An omnivorous student would perform equally, in terms of GPA, as opposed to a vegetarian student
+Alternative  | An omnivorous student would under perform, in terms of GPA, than a vegetarian student
+
+Hypothesis | Description  
+-----------|-------------
+Null      | An student who has a non-healthy diet would perform equally, in terms of GPA, as opposed to a student who has a healthy diet
+Alternative  | A student who has a non-healthy diet would under perform, in terms of GPA, than a student who has a healthy diet
+
+Hypothesis | Description  
+-----------|-------------
+Null      | An omnivorous student who has who a certain diet habit would perform equally, in terms of GPA, as opposed to a vegetarian student who share a similar diet habit
+Alternative  | An omnivorous student who has who a certain diet habit would under perform, in terms of GPA, than a vegetarian student who share a similar diet habit
+
+
+# The Data Set 
+
+In terms of dealing the data given, I selected survey questions in which I believe are most relevant to the assumption that I want to investigate, and ultimately performed necessary data cleaning so that it is tidy and logical enough for me to conduct further research. The Data set was collected from the entire ECON 220 class across all sections. 
+
+## Variable Inspection
+
+A total of 138 people responded to a series of questionnaires. For this particular study, I will select GPA, dietary preference, how often times do you eat pre-made food, how healthy a person eat to be my main variables.
+
+```{r}
+# load the data into R studio 
+
+load("/Users/zejiachen/Library/Mobile Documents/com~apple~CloudDocs/fall 2020 /ECON 220 lab/final project/Econ220DataF20_ano.Rdata")
+econdata <- Econ220DataF20_ano
+```
+
+```{r}
+# creating a new dataframe selecting survey question which is relevent to my hypothese
+econdata_new <- econdata %>% select(GPA, q13, q34, q51)
+
+# rename variables
+names(econdata_new) <- c("GPA","diet_preference", "premade_food", "eat_healithy")
+
+#make changes of the variable to factors
+econdata_new$GPA<-as.numeric(econdata_new$GPA)
+econdata_new$diet_preference<-factor(econdata_new$diet_preference)
+econdata_new$premade_food<-as.numeric(econdata_new$premade_food)
+econdata_new$eat_healithy<-as.factor(econdata_new$eat_healithy)
+
+```
+
+Before jumping straight right into visualizing data and seeking for correlation, first I want to inspect each of the variable, making sure it is neat enough to head to next step.
+
+## Explainatory Variables 
+I chose three explanatory variables for this study:
+
+1. **Dietary Preference**
+This question asks about students dietary preference :
+What are your dietary preferences? (Answer numerically with 1 = Omnivorous, 2 = Vegetarian, 3 = Vegan, 4 = Kosher, 5 = Other)
+
+2. **Pre-made Food Consumption**
+This question asks :
+How often times do you eat pre-made food during the week? 
+
+3. **Diet Habits**
+This question asks :
+On a scale of 1-5 do you think you eat healthy 1- being very unhealthy 5 being very healthy
+```{r}
+# data cleaning: dietary preference
+econdata_new$diet_preference_group <- fct_collapse(econdata_new$diet_preference,
+        nonvegetarian = c("1", "4", "Omnivorous"),
+        vegetarian = c("2", "3"),
+        other = c("5"))
+
+# data cleaning: pre-made food
+econdata_new$premade_times <- factor(econdata_new$premade_food, levels = c("frequent", "normal", "low"))
+
+econdata_new$premade_times[econdata_new$premade_food <= 3]<-"low"
+econdata_new$premade_times[econdata_new$premade_food > 3 & econdata_new$premade_food < 5]<-"normal"
+econdata_new$premade_times[econdata_new$premade_food >= 5]<-"frequent"
+
+# data cleaning: healthy 
+econdata_new$healthy <- factor(econdata_new$eat_healithy, levels = c("unhealthy", "normal", "healthy"))
+
+econdata_new$healthy[as.numeric(as.character(econdata_new$eat_healithy)) < 3]<-"unhealthy"
+econdata_new$healthy[as.numeric(as.character(econdata_new$eat_healithy)) == 3]<-"normal"
+econdata_new$healthy[as.numeric(as.character(econdata_new$eat_healithy)) >= 4]<-"healthy"
+
+```
+
+## Short Summary
+
+The brief summary table below shows the number and proportion of students in each dietary, pre-made food, healthy categories. 
+
+```{r}
+# dietary preference
+kt1<-tabyl(econdata_new$diet_preference_group, sort = TRUE)
+colnames(kt1)<- c("Diettary Preference", "Frequency (n=138)","%")
+kable(kt1,align="c", digits = 3) %>% kable_styling("striped", "bordered")
+
+# pre-made food
+kt2<-tabyl(econdata_new$premade_times, sort = TRUE)
+colnames(kt2)<- c("Premade Food Consumption", "Frequency (n=138)","%")
+kable(kt2,align="c", digits = 3) %>% kable_styling("striped", "bordered")
+
+# healthy
+kt3<-tabyl(econdata_new$healthy, sort = TRUE)
+colnames(kt3)<- c("Diet Habits", "Frequency (n=138)","%")
+kable(kt3,align="c", digits = 3) %>% kable_styling("striped", "bordered")
+
+```
+
+Finally, a simple table, grouped by their dietary preference and diet habits, displays the according GPA for each of the respondent.
+```{r, warning=FALSE}
+
+# summary table grouped by dietary and healthy
+summtab<- econdata_new %>% select(GPA, `diet_preference_group`, `healthy`)  %>% group_by(diet_preference_group, healthy)  %>% 
+  summarise_all(funs(mean, min, quantile(., 0.25) , median, quantile(., 0.75), max), na.rm=TRUE)
+
+
+colnames(summtab) <- c("Dietary","Healthy", "Mean", "Min", "Q1 ", "Median", "Q3", "Max")
+
+kable(summtab,align="c", digits = 3) %>% kable_styling("striped", "bordered") %>% add_header_above(c(" ", " ", "GPA Distribtion"= 6))
+
+
+```
+
+# Data Analysis
+
+In order to observe a clear effect of dietary preference and healthy diet on school performance, box plots and pie charts are plotted in the followed to better illustrate the relationship between the variables. 
+
+## The GPA Distribution Among Non-vegetarian & Vegetarian Students
+
+According to the pie chart, about 39% of the students have an excellent GPA (>=3.75), as oppose to 78% (near doubled) of the vegetarian student achieving a excellent GPA. In addition, the non-vegetarian group also have a bigger proportion of a poor GPA students (31%) compared to students who have a vegetarian diet.  
+
+```{r}
+# first create an factor variable of GPA, GPA_fct
+GPA_fct <- factor(econdata_new$GPA, levels = c("poor", "average", "excellant"))
+
+econdata_new$GPA_fct[econdata_new$GPA <= 3.4 & econdata_new$GPA != 0]<-"poor"
+econdata_new$GPA_fct[econdata_new$GPA >3.4 & econdata_new$GPA < 3.75]<-"average"
+econdata_new$GPA_fct[econdata_new$GPA >= 3.75]<-"excellant"
+
+# subsetting
+non_vegetarian <- subset(econdata_new, diet_preference_group=="nonvegetarian")
+vegetarian <- subset(econdata_new, diet_preference_group=="vegetarian")
+
+#getting the proportion distribution of non-vegetarian 
+table(non_vegetarian$GPA_fct)
+
+# getting the proportion distribution of vegetarian 
+table(vegetarian$GPA_fct)
+
+# create new dataframs for graphing purpose
+piechart_nonvegetarian <- data.frame(
+  GPA = c("poor", "average", "excellant"),
+  n = c(37, 25, 56),
+  prop = c(31, 30, 39)
+)
+
+piechart_vegetarian <- data.frame(
+  GPA = c("poor", "average", "excellant"),
+  n = c(3, 1, 14),
+  prop = c(17, 6, 78)
+)
+
+```
+
+```{r, warning=FALSE}
+# GPA distribution among non-vegetarian students
+
+pc1 <- plot_ly(piechart_nonvegetarian, labels = ~GPA, values = ~n, type = 'pie') %>% layout(title = 'GPA Distribution (Non-vegetarian)',
+         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+pc1
+
+pc2 <- plot_ly(piechart_vegetarian, labels = ~GPA, values = ~n, type = 'pie') %>% layout(title = 'GPA Distribution (Vegetarian)',
+         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+pc2
+```
+
+Similar to what pie chart suggests, the box plot suggests that vegetarian students has a higher mean GPA (3.73) than non-vegetarian students' (3.58) 
+
+```{r, warning=FALSE}
+GPA_pl <- subset(econdata_new, GPA != 0)
+
+bp1 <- GPA_pl %>%
+  plot_ly(
+    x = ~diet_preference_group,
+    y = ~GPA, split = ~diet_preference_group,
+    type = 'violin',
+    box = list(visible = T),
+    meanline = list(visible = T)) %>%
+  layout(xaxis = list(title = "Dietary Preference"),
+    yaxis = list(title = "GPA",zeroline = F))
+bp1
+```
+
+## The Distribution of Healthy & Nonhealthy Students among non/vegetarian studetns
+
+About 37% of the non-vegetarian students have a healthy diets (healthy score>4, on a scale of 5), as oppose to 55.6% of vegetarian student, having a healthy diets. Moreover,among the vegetarian group, no one identified themselves as eating unhealthily. 
+
+```{r}
+# creating new dataset for pie chart 
+
+#getting the count of healthy diet in non-vegetarian students
+table(non_vegetarian$healthy)
+
+# getting the count of nonhealthy diet in vegetarian students
+table(vegetarian$healthy)
+
+
+# create new dataframs for graphing purpose
+piechart_healthy.non <- data.frame(
+  healthy = c("unhealthy", "normal", "healthy"),
+  n = c(20, 55, 44)
+)
+
+piechart_healthy.vet <- data.frame(
+  healthy = c("normal", "healthy"),
+  n = c(8, 10)
+)
+```
+
+```{r}
+#plotting
+pc3 <- plot_ly(piechart_healthy.non, labels = ~healthy, values = ~n, type = 'pie') %>% layout(title = 'Healthy Diet Distribution (Nonvegetarian)',
+         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+pc3
+
+pc4 <- plot_ly(piechart_healthy.vet, labels = ~healthy, values = ~n, type = 'pie') %>% layout(title = 'Healthy Diet Distribution (Vegetarian)',
+         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+pc4
+
+```
+
+Judging the box plot, while, for vegetarian students, a apparent GPA difference between students with normal diet (3.75) and healthy diet (3.87) is observed, it seems that the grade point average does not alter drastically, depending on the change of the diet habit among the non-vegetarian students.The mean GPA is between 3.5 - 3.6 across all diet habits groups. There is no obvious sign suggesting eating healthily result a better GPA among non-vegetarian students. 
+
+```{r, warning=FALSE}
+
+bp2 <- GPA_pl %>%
+  plot_ly(type = 'violin') %>%
+  
+  add_trace(
+    x = ~healthy[GPA_pl$diet_preference_group == 'vegetarian'],
+    y = ~GPA[GPA_pl$diet_preference_group == 'vegetarian'],
+    legendgroup = 'vegetarian',
+    scalegroup = 'vegetarian',
+    name = 'vegetarian',
+    box = list(visible = T), meanline = list(visible = T),color = I("blue")) %>%
+  
+  add_trace(
+    x = ~healthy[GPA_pl$diet_preference_group == 'nonvegetarian'],
+    y = ~GPA[GPA_pl$diet_preference_group == 'nonvegetarian'],
+    legendgroup = 'nonvegetarian',
+    scalegroup = 'nonvegetarian',
+    name = 'nonvegetarian',
+    box = list(visible = T), meanline = list(visible = T),color = I("pink")) %>%
+  layout(xaxis = list(title = "How healthy are your diet"),
+    yaxis = list(title = "GPA",zeroline = F), violinmode = 'group')
+bp2
+
+```
+
+## The GPA Distribution Along With Pre-made Food Consumption
+
+We first suspect that pre-made food consumption is closely connected with a person's eating habits. For example, we presume that a person who has a more frequent pre-made food consumption will have a less healthy diet.
+
+Looking at both the pie charts and box plots, there are indeed signs showing such association. Vegetarian students who tend to have a healthier diet have consumed less pre-made food than non-vegetarian students. (72.2% vs. 66.1%) On the other side, however, there is no seemingly connection between pre-made food consumptions and students' GPA. As a matter of fact, students who frequently consume pre-made foods in both groups demonstrate a higher GPA compared to others. (This might also due to the fact that the lack of representation of the data set) 
+
+```{r}
+# creating new dataset for pie chart 
+
+#getting the proportion distribution of non-vegetarian 
+table(non_vegetarian$premade_times)
+
+# getting the proportion distribution of vegetarian 
+table(vegetarian$premade_times)
+
+
+# create new dataframs for graphing purpose
+piechart_premade.non <- data.frame(
+  premade = c("low", "normal", "frequent"),
+  n = c(78, 12, 28)
+)
+
+piechart_premade.vet <- data.frame(
+  premade = c("low", "normal", "frequent"),
+  n = c(13, 4, 1)
+)
+```
+
+
+```{r}
+#plotting
+pc5 <- plot_ly(piechart_premade.non, labels = ~premade, values = ~n, type = 'pie') %>% layout(title = 'Pre-made Consumption (Nonvegetarian)',
+         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+pc5
+
+pc6 <- plot_ly(piechart_premade.vet, labels = ~premade, values = ~n, type = 'pie') %>% layout(title = 'Pre-made Consumption (Vegetarian)',
+         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+pc6
+```
+
+```{r, warning=FALSE}
+bp3 <- GPA_pl %>%
+  plot_ly(type = 'violin') %>%
+  
+  add_trace(
+    x = ~premade_times[GPA_pl$diet_preference_group == 'vegetarian'],
+    y = ~GPA[GPA_pl$diet_preference_group == 'vegetarian'],
+    legendgroup = 'vegetarian',
+    scalegroup = 'vegetarian',
+    name = 'vegetarian',
+    box = list(visible = T), meanline = list(visible = T),color = I("blue")) %>%
+  
+  add_trace(
+    x = ~premade_times[GPA_pl$diet_preference_group == 'nonvegetarian'],
+    y = ~GPA[GPA_pl$diet_preference_group == 'nonvegetarian'],
+    legendgroup = 'nonvegetarian',
+    scalegroup = 'nonvegetarian',
+    name = 'nonvegetarian',
+    box = list(visible = T), meanline = list(visible = T),color = I("pink")) %>%
+  layout(xaxis = list(title = "Pre-made Food Consumption"),
+    yaxis = list(title = "GPA",zeroline = F), violinmode = 'group')
+bp3
+
+```
+
+# Hypothesis Testing
+
+It is time to test our previous assumptions! A T-test is conducted to determine the significance of the difference in mean GPA observed for each group being examined, as stated in the hypotheses in the former section.
+
+## Vegetarian vs. Nonvegetarian
+
+This test intends to compare the sample mean GPA between non-vegetarian students and vegetarian students. I employed a two-sample t-test. The level of significance for this test default at alpha of 0.05.
+```{r}
+# subsetting the data set leaving only students with vegetarian or nonvegetarian diets 
+dt_test <- subset(GPA_pl, (diet_preference_group=="vegetarian" | diet_preference_group=="nonvegetarian"))
+
+t.test(GPA ~ diet_preference_group, data = dt_test, alternative="l")
+```
+
+According to this test, we observed a p-value of 0.046 < alpha. We also obtain a confidence interval for difference between means (mean GPA of non-vegetarian group minus mean of vegetarian group) of -0.004 to negative infinity. Because the p-value does not exceed alpha and the confidence interval does not includes 0, we reject the null hypothesis: the data shows statistically significant evidences that the mean GPA of non-vegetarian students are less than  the GPA of vegetarian students.
+
+But still worth noticing, the test p-value is 0.046 which is seemingly close to the 5% significant thresholds. Although, we ultimately rejected the null hypothesis, we still have to be conscientious to the relative large p-value.    
+
+## Healthy diet vs. Unhealthy diet
+
+This test intends to compare the sample mean GPA between students with a healthy diet and students who do not. I employed a two-sample t-test. The level of significance for this test default at alpha of 0.05.
+```{r}
+dt_test$healthy_bi[as.numeric(as.character(dt_test$eat_healithy)) < 4]<-"not healthy"
+dt_test$healthy_bi[as.numeric(as.character(dt_test$eat_healithy)) >= 4]<-"healthy"
+
+t.test(GPA ~ healthy_bi, data = dt_test, alternative="g")
+
+```
+
+According to this test, we observed a p-value of 0.1611 > alpha. We also obtain a confidence interval for difference between means (mean GPA of healthy diet group minus mean of non-healthy group) of -0.0393 to infinity. Because the p-value exceed alpha and the confidence interval includes 0, we failed to reject the null hypothesis: the data does not shows statistically significant evidences that the mean GPA of students who have healthy diet are greater than the GPA of students who have non-healthy diet.
+
+## Vegetarian vs. Nonvegetarian controlled by Diet Habit
+
+This test intends to compare the sample mean GPA between non-vegetarian students and vegetarian students with controlled under the same diet habits. I employed a two-sample t-test. The level of significance for this test default at alpha of 0.05.
+```{r}
+# mean GPA difference controlled by healthy diet 
+t.test(GPA ~ diet_preference_group, data = subset(dt_test, (healthy_bi=="healthy")), alternative="l")
+
+# mean GPA difference controlled by non-healthy diet 
+t.test(GPA ~ diet_preference_group, data = subset(dt_test, (healthy_bi=="not healthy")), alternative="l")
+```
+
+The result is fairly a interesting one. When controlled the healthy diet, we observed a p-value of seemingly equal to zero, and a confidence interval for difference between means (mean GPA of non-vegetarian group minus mean of vegetarian group) of -0.1916 to negative infinity. We reject the null hypothesis: the data shows statistically significant evidences that the mean GPA of non-vegetarian students are less than the GPA of vegetarian students when they share a healthy diet habits. 
+
+However, if we chose to control students who have non-healthy diet, we observed a p-value of 0.5268, and a confidence interval for difference between means (mean GPA of non-vegetarian group minus mean of vegetarian group) of 0.34554 to negative infinity. We failed to reject the null hypothesis: the data does not show statistically significant evidences that the mean GPA of non-vegetarian students habits are less than the GPA of vegetarian students when they all have a normal diet habits. 
+
+# Conclusion
+
+The purpose of this project is to validate my assumption that a healthier diet can lead to a better school performance as well as my suspicion that a having a vegetarian diet would archive a consistent better academic result.
+
+My assumption and past knowledge leading to this study were that (1) students who have a omnivorous diets would perform equally, in terms of GPA, students who have a vegetarian diets, (2) students who generally have a healthy diets would outperform students who do not, and (3) omnivorous students would perform equally, in terms of GPA, vegetarian students who share a similar diet habits (healthy diets, non-healthy diets).
+
+The results of this study, however, winded up a totally opposite outcome compared to my previous assumption. The test statistics and p-value display a statistically significant support for my assumption while failing to have a statistically significant support for my assumption 2. It is statistically significant that vegetarian students have a better grade compared to omnivorous students. And there is no significant evidence showing that students who generally have a healthy diets would outperform students who do not.
+
+There are a variety of factors that could lead into why this is the case. Firstly, the sample selected was limited to Emory University undergraduate students who were enrolled in ECON220. There is no doubt that the data set is very likely biased since students who enrolled in such class already have certain characteristics that may undermine the credibility of the study. Second, the sample size of vegetarian students are relatively small. There is only about 13% of vegetarian students in the data set compared to 85% of omnivorous students. The small proportion of vegetarian students may under represent the general behavior vegetarian students. In addition, it can also be due to the fact other factors may impact the relationship observed. These include majors, incomes, course selected, and etc.. The third important factor that may introduce biases to our results was the self-grading method of data collection. It was difficult to pinpoint the exact threshold to categorize if a student has a healthy diet habit or not simply based on the scale of 1 to 5. And Students who may be self-conscious about or unaware of their dietary preference and habit may have contaminated the data as well.
+
+The test statistics of my third assumption was an interesting one. The outcomes are virtually the opposite when we chose to control for different variables. One explanation for the surprising result might due to the sample size and the fact that in general vegetarian students have a healthier diet than omnivorous students and vice verse. Hence, we are not essentially doing  an apples to apples comparisons in this chase.   
+
+In addition to the study’s drawbacks, the test statistics and result simply offer us a glance of the behaviors within a small sample population. We cannot infer causation from the results pulled. Even so, based on the study, the outcome indicates an contradictory result to my original assumption that - Vegetarian students in ECON 220, fall 2020 class have a better academic performance compared to omnivorous while having a healthy diet does not seem to correlate to student's grade point average.
+
+## Future Direction
+
+Looking forward to improving my study and outcome, it would be a better choice to explore and other factors that a student's dietary preferences or may be worthy to even conduct a small experiments to identify the effect more preciously. (i am exciteing to build up a regression model in the next semester) It may also be helpful to replicate this study with a larger and more diverse sample size, in case the introduced biases imbed in the original data set.
+
+# Reference
+--- Pareek, Priyanka, and Syeda Ayesha. "Physical And Academic Performance Of Vegetarian And Non-Vegetarian School Girls (13–15 Yrs)". Shadan Degree And P.G. College For Women, 2015.
+
+--- FLORENCE, MICHELLE et al. "Diet Quality And Academic Performance". American School Health Association, 2008.
