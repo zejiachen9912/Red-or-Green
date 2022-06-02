@@ -7,4 +7,4 @@ You can view my works below:
 
 [View html](https://htmlpreview.github.io/?https://github.com/zejiachen9912/Red-or-Green/blob/main/FinalProject.html)
 
-[View Files](https://github.com/zejiachen9912/Red-or-Green/blob/main/FinalProject.rmd)
+[View Codes](https://github.com/zejiachen9912/Red-or-Green/blob/main/FinalProject.rmd)
