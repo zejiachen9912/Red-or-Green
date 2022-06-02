@@ -1,0 +1,298 @@
+---
+title: "Final Project Proposal ECON 220"
+author: "Zejia Chen"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  rmdformats::readthedown:
+    code_folding: show
+    self_contained: true
+    thumbnails: true
+    lightbox: true
+    gallery: false
+    highlight: tango
+  html_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(rmdformats)
+library(tidyverse)
+## Load your packages here , your packages will be hidden but make sure that you mention which packages you used in your document
+```
+
+# Introduction and motivation:
+
+I am a strong believer on consistant diet's impact toward not only student's physical health, but prepare them to be successful in school as well. Good nutrition contributes to healthy growth and development, chronic disease prevention, strong school performance and positive behaviour among the youth. Significant researches has done regarding this topic, stressing the importance of healthy diet pertaining students' school performance. For example, [an reseach article by American School Health association in 2008](https://onlinelibrary.wiley.com/doi/pdf/10.1111/j.1746-1561.2008.00288.x), demonstrate the an association between diet quality and academic performance in which Students with an increased fruit and vegetable intake and lower caloric intake of fat were significantly less likely to fail the tests and assessments.
+
+While I totally have my back against healthy diets, incessant debates regarding being a vegetarian/vegan in the past few years have caught my attention. Numinous researches directly connect being a vegetarian to strong school performances and economic well-beings, and advocating others to change their dietary preference. Personally, as a huge meat-lover, I am little skeptical about how becoming a vegetarin or vegan can directly impact students' school performances. Having a health diet does not necessarily mean someone has to become a vegetarian/vegan. Plus meats contain profuse beneficial trace elements which we cannot directly absorb from vegetables which might inversely harm our physical and mental health, if we do not choose to consume.
+
+A [research article in respect of physical and academic performance of vegetarian and non-vegetarian school girl conducted in India](https://pdfs.semanticscholar.org/9883/591af9a3007c085fac2df2be0e5bbc16147d.pdf) makes me even more concern about the validity of the correlation between vegetarian and scholastic performance. While it is obvious and perceviable that non-vegetarian girls outperform vegetarian girl physically, the study suggests that insignificant difference was found between the academic and physical performance of both the groups.
+
+As a result, I am extremely interested in and would love to utilze this research opportunity to find out how being a vegetarian/vegan will affect students' everyday diets habits and further impact their academic performances.
+
+# Hypotheses
+My Hypotheses are as followed : 
+
+Hypothesis | Description  
+-----------|-------------
+Null      | A vegetarian student would perform equally, in terms of GPA, than an omnivorous student
+Alternative  | A vegetarian student would outperform, in terms of GPA, an omnivorous student
+
+Hypothesis | Description  
+-----------|-------------
+Null      | An student who has healthy diet would perform equally, in terms of GPA, a student who has an unhealthy diet
+Alternative  | A student who has healthy diet would outperform, in terms of GPA, an omnivorous student who has an unhealthy diet
+
+Hypothesis | Description  
+-----------|-------------
+Null      | A vegetarian student who has healthy diet would perform equally, in terms of GPA, than an omnivorous student who has a similar diet habits
+Alternative  | A vegetarian student who has healthy diet would outperform, in terms of GPA, an omnivorous student who has a similar diet habits
+
+
+# Data Description 
+
+image: ![](/Users/zejiachen/Desktop/fall 2020 /ECON 220 lab/final project/study.png){width=70%}
+
+The study reveals that 32% non-vegetarian got higher scores followed by 26% of vegetarian. At the same time, about 6% more of non-vegetarian get a lower score than the vegetarian. It seems like indeed there is no significant correlation between test scores and diets preference, and we have reasons to believe the some of the differences are cause by noises and omitted variables. I want to compare the result to the class survey we conduct to see the consistancy of outcomes.
+
+
+In terms of dealing class data, I  selected survey questions in which I believe are relevant to my hypotheses, and perform necessary cleaning process so that it is tidy and logical enough for me to conduct further research. The class data was collected via survey, in which total 138 students responded.
+```{r}
+# load the data into R studio 
+
+load("~/Desktop/fall 2020 /ECON 220 lab/final project/Econ220DataF20_ano.Rdata")
+econdata <- Econ220DataF20_ano
+```
+
+```{r}
+# creating a new dataframe selecting survey question which is relevent to my hypothese
+econdata_new <- econdata %>% select(sex, GPA, Income, Major, q13, q34, q51)
+
+# rename variables
+
+names(econdata_new) <- c("sex", "GPA", "income", "major", "diet_preference", "premade_food", "eat_healithy")
+
+#make changes of the variable to desire types
+econdata_new$sex<-as.factor(econdata_new$sex)
+econdata_new$GPA<-as.numeric(econdata_new$GPA)
+econdata_new$income<-factor(econdata_new$income, levels = c("Under 50,000", "$50,001 - $ 100,000", "$100,001 - $ 200,000", "$ 200,001 - $ 400,000", "$400,001 - $600,000", "$600,000+"))
+econdata_new$major<-as.factor(econdata_new$major)
+econdata_new$diet_preference<-factor(econdata_new$diet_preference)
+econdata_new$premade_food<-as.numeric(econdata_new$premade_food)
+econdata_new$eat_healithy<-as.factor(econdata_new$eat_healithy)
+
+```
+
+# Variable Inspection
+Before jumping straight right into visualizing data and seeking for correlation, first I want to inspect each of the variable, making sure it is neat enough to head to next step.
+
+## Sex
+A simple summary about the gender distribution in the dataset
+```{r}
+table(econdata_new$sex)
+
+```
+
+## GPA
+GPA is a very important variable for my study. Since I want to draw correlation between dietary preference and school performance, the GPA will be the variable to measure student's academic performance. 
+```{r, eval=FALSE}
+round(econdata_new$GPA, 2)
+```
+
+```{r}
+summary(econdata_new$GPA)
+```
+
+## Income 
+Family income is another variable that I want to keep in the data set. As we know, the socioeconomic status also may impact one's performance in university. Keeping this variable allows me to control this confounding, and gain a real picture of my desire outcome. 
+```{r}
+summary(econdata_new$income)
+round(prop.table(table(econdata_new$income)), 3)
+
+#In terms of percentage,25.9% of the student's family's income is less than $100,000, and 
+#25.4% of the student's family income is greater than $400,000
+
+```
+
+## Major
+Student's major is one of the underlying factor which might has an impact on their GPA. For the future research, I might want to evaluate correlation and regression by grouping students depending on their majors, so that I can have control over the particular variable.
+However, in this question, there are not any options for participants to choose, rather filling out by themselves. I need to rename and rearrange the responses ensuring the tidiness of the dataset. 
+```{r}
+# I used forcats to group the major of students into 17 distinct major categories 
+library(forcats)
+
+econdata_new$major <- fct_collapse(econdata_new$major,
+  Business = c("BBA", "BBA Finance", "Business", "Business: ISOM", "Finace", "Finance", "finance"),
+  Economics = c("Econ", "economics", "Economics", "Economy"),
+  EconMath = c("ECON MATH", "econ/math", "Econ/Math", "Economics and Math", "Economics and Mathematics", "Economics/Mathematics", "Math and Economics", "Math/Econ", "econmath"),
+  QSS = c("Economics and QSS", "QSS", "Qss + Econ", "QSS+informatics", "QTM", "QTM/Economics", "Quantitative Sciences"),
+  ComputerScience = c("Computer Science", "computer science", "Computer Science and Mathematics"),
+  History = c("History", "History & Economics"),
+  HumanHealth = c("Human health", "Human Health and Economics Joint Major", "Human Health/Economics Joint Major"),
+  Psychology = c("psychology", "Psychology"),
+  Neuroscience = c("Neuroscience", "Neuroscience and Behavioral Biology")
+)
+
+fct_count(econdata_new$major)
+```
+
+```{r}
+# In terms of percentage, 46.4% of the students are Economics major,
+#11.6% of them are business major, 10.1% of them are EconMath, 
+#and 9.4% of them are QSS major.
+round(prop.table(table(econdata_new$major)), 3)
+
+```
+
+
+## Dietary Prefrence 
+This question asks about students dietary preference :
+What are your dietary preferences? (Answer numerically with 1 = Omnivorous, 2 = Vegetarian, 3 = Vegan, 4 = Kosher, 5 = Other)
+
+The variable is extremely important for my research, since it summarizes the dietary preference of each students. I will be use this data set very often, observing correlation between school performance and vegetarian and non-vegetarian.
+```{r}
+# I grouped omnivorous and Kosher into the non-vegetarian category, 
+#since their diet all contain meat. And I group vegeterian and vegan into one group
+econdata_new$diet_preference_group <- fct_collapse(econdata_new$diet_preference,
+        nonvegetarian = c("1", "4", "Omnivorous"),
+        vegetarian = c("2", "3"),
+        other = c("5"))
+        
+# About 85.5% of the students have a non-vegetarian diets, 
+# while 13% of them have a vegetarian diet.
+table(econdata_new$diet_preference_group)
+
+```
+
+## Premade food
+This question asks :
+How often times do you eat pre-made food during the week? 
+
+The variable provides one measure for me to appraise how healthy each student's diet is.
+```{r}
+summary(econdata_new$premade_food)
+
+# create a factor variable named premade_times, grouping students' dietary behavior 
+#depend on their premade food consumption 
+premade_times <- factor(econdata_new$premade_food, levels = c("excessive", "normal", "well"))
+
+econdata_new$premade_times[econdata_new$premade_food <= 3]<-"low"
+econdata_new$premade_times[econdata_new$premade_food >3 & econdata_new$premade_food < 5]<-"nomral"
+econdata_new$premade_times[econdata_new$premade_food >= 5]<-"frequent"
+
+# abour 67.4% of the students are having a healthy diet 
+#by consuming less premade food per week
+round(prop.table(table(econdata_new$premade_times)), 3)
+
+```
+
+## Eating Healthy
+This question asks :
+On a scale of 1-5 do you think you eat healthy 1- being very unhealthy 5 being very healthy
+
+This variable is another angle for me to approach to students' diets. Along with the last variable, I can have a general picture of how a student's diet is like regardless their dietary preference.
+When controlling these two variables, plus the major variable, I can avoid the influence of the confounding, which help me get to a more unbias result.
+```{r}
+# create a factor variable named premade_times, grouping students' dietary behavior 
+#depend on their premade food consumption 
+healthy <- factor(econdata_new$eat_healithy, levels = c("unhealthy", "normal", "healthy"))
+
+econdata_new$healthy[as.numeric(as.character(econdata_new$eat_healithy)) < 3]<-"unhealthy"
+econdata_new$healthy[as.numeric(as.character(econdata_new$eat_healithy)) == 3]<-"normal"
+econdata_new$healthy[as.numeric(as.character(econdata_new$eat_healithy)) >= 4]<-"healthy"
+
+
+fct_count(econdata_new$healthy)
+
+```
+
+# Graph
+I created this graph base on my hypothesis. I also controlled for the healthy variable, wanting to see how healthy diets can affect GPA as well.
+
+The graph  is honestly quite messy. It did not well demonstrate proper relationship between dietary preference and the school performance, neither display a clear picture of the effect of healthy diet.
+
+In terms of the effect of being a vegetarian to one's school performance, I still have to do some more controlling testing to get a explicable outcome 
+
+```{r, eval=FALSE, warning=TRUE}
+ggplot(econdata_new, mapping=aes(y=GPA,x=diet_preference_group,color=healthy)) +
+  geom_boxplot() +
+  ylab("GPA") + xlab("Dietary Preference") +
+  ggtitle("Dietary Preference in Relation to GPA") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ylim(2, 4)
+
+```
+
+image: ![](/Users/zejiachen/Desktop/fall 2020 /ECON 220 lab/final project/graph.png){width=75%}
+
+To better visualize the correlation between being a vegetarian/non-vegetarian and school performance 
+
+```{r, eval=FALSE}
+# first create an factor variable of GPA, GPA_fct
+GPA_fct <- factor(econdata_new$GPA, levels = c("poor", "average", "excellant"))
+
+econdata_new$GPA_fct[econdata_new$GPA <= 3.4]<-"poor"
+econdata_new$GPA_fct[econdata_new$GPA >3.4 & econdata_new$GPA < 3.75]<-"average"
+econdata_new$GPA_fct[econdata_new$GPA >= 3.75]<-"excellant"
+
+# subsetting
+non_vegetarian <- subset(econdata_new, diet_preference_group=="nonvegetarian")
+vegetarian <- subset(econdata_new, diet_preference_group=="vegetarian")
+
+#getting the proportion distribution of non-vegetarian 
+round(prop.table(table(non_vegetarian$GPA_fct)), 2)
+
+# getting the proportion distribution of vegetarian 
+round(prop.table(table(vegetarian$GPA_fct)), 2)
+```
+
+```{r}
+# create new dataframs for graphing purpose
+piechart_nonvegetarian <- data.frame(
+  GPA = c("poor", "average", "excellant"),
+  n = c(37, 25, 56),
+  prop = c(31, 30, 39)
+)
+
+piechart_vegetarian <- data.frame(
+  GPA = c("poor", "average", "excellant"),
+  n = c(3, 1, 14),
+  prop = c(17, 6, 78)
+)
+
+#add label positioning 
+piechart_nonvegetarian <- piechart_nonvegetarian %>%
+  arrange(desc(GPA)) %>%
+  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
+
+piechart_vegetarian <- piechart_vegetarian %>%
+  arrange(desc(GPA)) %>%
+  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
+```
+
+
+```{r, eval=FALSE}
+# GPA distribution among non-vegetarian students
+ggplot(piechart_nonvegetarian, aes(x = "", y = prop, fill = GPA)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
+  theme_void()
+```
+image: ![](/Users/zejiachen/Desktop/fall 2020 /ECON 220 lab/final project/piechart_non.png){width=75%}
+
+```{r, eval=FALSE}
+# GPA distribution among non-vegetarian students
+ggplot(piechart_vegetarian, aes(x = "", y = prop, fill = GPA)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
+  theme_void()
+```
+image: ![](/Users/zejiachen/Desktop/fall 2020 /ECON 220 lab/final project/piechart_vet.png){width=75%}
+
+According to the pie chart, it does seem like being a vegetarian correlate with higher school performance, in which 78% of the students have an excellent GPA compared to only 39% among the non-vegetarian students.
+
+However, there are still confounding out there which I did not address for. Different major or sex, or even family income might also impact the school performance. Meanwhile, I have to account for the fact that the sample size of vegetarian students is relative small, consisting only 13% of the entire population. As a result, I still need to do more controlling in order to gain a more unbias, precious, and general picture of my hypothesis.

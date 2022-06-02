@@ -1,0 +1,63 @@
+groups questions,questionnumber,Questions,
+,q1,What year are you at Emory? (Answer numerically),q1-What year are you at Emory? (Answer numerically)
+,q2,What is your sex assigned at birth?,q2-What is your sex assigned at birth?
+,q3,What gender do you identify with?,q3-What gender do you identify with?
+,q4,What is your age? Provide a numerical answer.,q4-What is your age? Provide a numerical answer.
+,q5,What ethnicity do you identify as?,q5-What ethnicity do you identify as?
+,q6,Which country are you originally from? Capitalize the first letter.,q6-Which country are you originally from? Capitalize the first letter.
+,q7,Which state are you originally from? Use all capital letters and provide the abbreviation or type INT if international,q7-Which state are you originally from? Use all capital letters and provide the abbreviation or type INT if international
+,q8,"What is your cumulative GPA up to this point? (Answer from 0.0 to 4.0; if you have not received a University GPA, list your high school GPA or equivalent on a scale of 0-4.0","q8-What is your cumulative GPA up to this point? (Answer from 0.0 to 4.0; if you have not received a University GPA, list your high school GPA or equivalent on a scale of 0-4.0"
+,q9,What economic background do you fall into? Parents' income in USD. ,q9-What economic background do you fall into? Parents' income in USD. 
+,q10,What is your primary major?,q10-What is your primary major?
+,q11,Are you coming from Oxford College?,q11-Are you coming from Oxford College?
+,q12,How happy have you been at Emory? (Answer on a scale of 1 – 5 with 5 being as happy as can be),q12-How happy have you been at Emory? (Answer on a scale of 1 – 5 with 5 being as happy as can be)
+,q13,"What are your dietary preferences? (Answer numerically with 1 = Omnivorous, 2 = Vegetarian, 3 = Vegan, 4 = Kosher, 5 = Other)","q13-What are your dietary preferences? (Answer numerically with 1 = Omnivorous, 2 = Vegetarian, 3 = Vegan, 4 = Kosher, 5 = Other)"
+,q14,"On average, how many hours of sleep do you get per night? (Answer with an integer from 0 to 24)","q14-On average, how many hours of sleep do you get per night? (Answer with an integer from 0 to 24)"
+,q15,Do you practice sleep hygiene? Not looking at any screen an hour before you go to bed.,q15-Do you practice sleep hygiene? Not looking at any screen an hour before you go to bed.
+,q16,"How often do you read the news? (Answer numerically with 1 = at least once a day, 2 = at least once a week, 4 = at least once a month, 5 = other)","q16-How often do you read the news? (Answer numerically with 1 = at least once a day, 2 = at least once a week, 4 = at least once a month, 5 = other)"
+,q17,Do you identify as an extrovert or introvert?,q17-Do you identify as an extrovert or introvert?
+,q18,On average how many hours a day do you spend on social media? Answer with an integer between 0 to 24.,q18-On average how many hours a day do you spend on social media? Answer with an integer between 0 to 24.
+,q19,"Recently, have you participated in any activist movements? (Answer numerically with 1 = None, 2 = Protests, 3 = Donations/fundraising, 4 = online activisms 5= other)","q19-Recently, have you participated in any activist movements? (Answer numerically with 1 = None, 2 = Protests, 3 = Donations/fundraising, 4 = online activisms 5= other)"
+,q20,How important do you consider voting? (Answer on a scale of 1 – 5 with 5 being voting is the top priority),q20-How important do you consider voting? (Answer on a scale of 1 – 5 with 5 being voting is the top priority)
+,q21,How often do you reflect on your own privileges (i.e. being grateful for gifts or daily necessities you use that others may not have)? (Answer on a scale of 1 – 5 with  5 being constantly reflecting and 1 being little to none),q21-How often do you reflect on your own privileges (i.e. being grateful for gifts or daily necessities you use that others may not have)? (Answer on a scale of 1 – 5 with  5 being constantly reflecting and 1 being little to none)
+,q22,How much has your life been impacted by COVID-19? (Answer on a scale of 1 – 5 where 1 is unnoticeably),q22-How much has your life been impacted by COVID-19? (Answer on a scale of 1 – 5 where 1 is unnoticeably)
+,q23,How do you feel about the US government's response to COVID-19? (Answer on a scale of 1 - 5 with 1 being frustrated and 5 being satisfied),q23-How do you feel about the US government's response to COVID-19? (Answer on a scale of 1 - 5 with 1 being frustrated and 5 being satisfied)
+,q24,How do you feel about Emory's response to COVID-19? (Answer on a scale of 0 - 10 with 0 being frustrated and 10 being satisfied),q24-How do you feel about Emory's response to COVID-19? (Answer on a scale of 0 - 10 with 0 being frustrated and 10 being satisfied)
+,q25,"Has art (music, painting, spoken word, poetry, etc.) played a larger role in your life since March 2020? (Yes/No)","q25-Has art (music, painting, spoken word, poetry, etc.) played a larger role in your life since March 2020? (Yes/No)"
+,q26,"How did you spend the majority of your time since March 2020? (1=Online job/internship, 2=in-person job/internship, 3=online classes, 4=at-home self-reflection/development [i.e. hobbies, baking, starting a company], 5 = other)","q26-How did you spend the majority of your time since March 2020? (1=Online job/internship, 2=in-person job/internship, 3=online classes, 4=at-home self-reflection/development [i.e. hobbies, baking, starting a company], 5 = other)"
+,q27,Did you want to return to campus this fall? (Yes/no),q27-Did you want to return to campus this fall? (Yes/no)
+,q28,"On average, how often do you currently workout during the week? The number represents times.","q28-On average, how often do you currently workout during the week? The number represents times."
+,q29,Are you afraid of getting sick from COVID?,q29-Are you afraid of getting sick from COVID?
+,q30,How strict are you with your practice of social distancing on a scale of 1-5? 1 not strict at all - 5 very strict,q30-How strict are you with your practice of social distancing on a scale of 1-5? 1 not strict at all - 5 very strict
+,q31,"If given the option would you opt for not wearing a mask, or you stick to the protocol?","q31-If given the option would you opt for not wearing a mask, or you stick to the protocol?"
+,q32,Did you cook at your home before college?,q32-Did you cook at your home before college?
+,q33,How often do you cook during the week? Provide a numerical answer for times during the week. ,q33-How often do you cook during the week? Provide a numerical answer for times during the week. 
+,q34,How often do you eat pre-made food? Provide a numerical answer for times during the week. ,q34-How often do you eat pre-made food? Provide a numerical answer for times during the week. 
+,q35,Are you reading more books since March than you did before?,q35-Are you reading more books since March than you did before?
+,q36,How many books on average do you read in a semester? Provide a numerical answer.,q36-How many books on average do you read in a semester? Provide a numerical answer.
+,q37,For books do you prefer digital or paper?,q37-For books do you prefer digital or paper?
+,q38,Do you prefer to shop for clothes online or in-person?,q38-Do you prefer to shop for clothes online or in-person?
+,q39,How much money do you spend on clothing per semester? Give a numerical answer with no $ included. ,q39-How much money do you spend on clothing per semester? Give a numerical answer with no $ included. 
+,q40,Has this number change due to the pandemic?,q40-Has this number change due to the pandemic?
+,q41,On average how many hours per week do you spend on school work besides zoom classes?,q41-On average how many hours per week do you spend on school work besides zoom classes?
+,q42,Are you currently in Atlanta or somewhere else?,q42-Are you currently in Atlanta or somewhere else?
+,q43,What is your preferred presidential candidate for the coming US elections?,q43-What is your preferred presidential candidate for the coming US elections?
+,q44,What was your SAT score or equivalent to apply to college? Provide a numerical answer,q44-What was your SAT score or equivalent to apply to college? Provide a numerical answer
+,q45,"What was your unweighted high school GPA? Enter on a 4.0 scale, rounded to two decimals?","q45-What was your unweighted high school GPA? Enter on a 4.0 scale, rounded to two decimals?"
+,q46,Did you have a job before the pandemic,q46-Did you have a job before the pandemic
+,q47,Do you currently have a job? ,q47-Do you currently have a job? 
+,q48,Has anyone in your family lost their job because of the pandemic?,q48-Has anyone in your family lost their job because of the pandemic?
+,q49,Have you or your family being financially affected by the pandemic?,q49-Have you or your family being financially affected by the pandemic?
+,q50,How much money do you think you are saving monthly by not going out or doing extracurricular activities due to the current situation? Provide a numerical answer ,q50-How much money do you think you are saving monthly by not going out or doing extracurricular activities due to the current situation? Provide a numerical answer 
+,q51,On a scale of 1-5 do you think you eat healthy 1- being very unhealthy 5 being very healthy,q51-On a scale of 1-5 do you think you eat healthy 1- being very unhealthy 5 being very healthy
+,q52,"What is your expected annual salary the first year out of college? Enter a numerical answer only, with no commas. (i.e. 500000) ","q52-What is your expected annual salary the first year out of college? Enter a numerical answer only, with no commas. (i.e. 500000) "
+,q53,"What is your expected annual salary 10 years out of college? Enter a numerical answer only, with no commas. (i.e. 500000)","q53-What is your expected annual salary 10 years out of college? Enter a numerical answer only, with no commas. (i.e. 500000)"
+,q54,What type of career do you see yourself in? Private sector/business; Public sector/government; NGO; Medical – Public; Medical – Private; Law – Public; Law – Private; Fine Arts/Creative/Performance; Education; Other,q54-What type of career do you see yourself in? Private sector/business; Public sector/government; NGO; Medical – Public; Medical – Private; Law – Public; Law – Private; Fine Arts/Creative/Performance; Education; Other
+,q55,"If you are a driver: do you typically drive: always under or at the speed limit; within 10 MPH of the speed limit; within 20 MPH of the speed limit; always UNDER the speed limit; I do not drive, I get driven.","q55-If you are a driver: do you typically drive: always under or at the speed limit; within 10 MPH of the speed limit; within 20 MPH of the speed limit; always UNDER the speed limit; I do not drive, I get driven."
+,q56,Do you prefer your sandwiches cut vertically or diagonally?,q56-Do you prefer your sandwiches cut vertically or diagonally?
+,q57,Is your phone android or iphone?,q57-Is your phone android or iphone?
+,q58,Do you have your own savings?,q58-Do you have your own savings?
+,q59,"Do you consider yourself  Risk lover, Risk-averse or in the middle?","q59-Do you consider yourself  Risk lover, Risk-averse or in the middle?"
+,q60,Do you like knowing about other cultures?,q60-Do you like knowing about other cultures?
+,q61,How many countries in the world have you been besides your home country?,q61-How many countries in the world have you been besides your home country?
+,q62,How many languages you speak? Provide a numerical answer,q62-How many languages you speak? Provide a numerical answer

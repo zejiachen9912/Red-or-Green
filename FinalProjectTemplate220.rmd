@@ -1,0 +1,63 @@
+---
+title: "Final Project Template ECO 320"
+author: "Paloma Lopez de mesa"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+  html_document: 
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+## Load your packages here , your packages will be hidden but make sure that you mention which packages you used in your document
+```
+
+<span style="color:green">** YOU HAVE TO SHOW ALL YOUR CODE, BUT BE MINDFUL THAT THE MORE EFFICIENT YOUR CODE IS THE LESS LINES OF CODE YOU WILL NEED. ALSO THE IDEA OF THE PORJECT IS THAT YOUR TABLES AND GRAPHS ARE SO GOOD THAT IF YOUR CODE IS HIDDEN YOUR WHOLE DOCUMENT MAKE SENSE. YOU NEED TO EXPLAIN YOUR FINDINGS BUT AGAIN YOUR TABLES AND GRAPHS SHOULD BE SELF CONTAINED SO THAT I UNDERSTAND YOUR ANALYSIS BY LOOKING AT THOSE ONLY **</span>
+
+<span style="color:red">**REMEMBER THIS A TEMPLATE SO YOU HAVE AN IDEA OF THE SECTIONS THAT YOU COULD CREATE, CONTENT AND PACKAGES THAT YOU SHOULD HAVE IN YOUR PROJECT. HOWEVER, I EXPECT THAT YOU DO AS MUCH AS YOU CAN TO SHOW ME YOUR KNOWLEDGE OF R AND YOUR DISCRETION ABOUT WHEN AND HOW TO USE THE CODE. I ALSO EXPECT THAT YOU SHOW ME YOUR SKILLS FOR PROGRAMING ON YOUR OWN, AND FIGURING OUT THE MANIPULATION THAT YOU NEED TO ACCOMPLISH YOUR ANALYTICAL GOALS. THAT MEANS MAKING DECISONS ABOUT PACKAGES AND FUNCTIONS TO USE. ALSO I EXPECT THAT YOU GO A LITTLE BEYOND WHAT YOU LEARNED AND SHOW ME THAT YOU ARE ABLE TO FIGURE OUT THINGS ON YOUR OWN -- NEW CODE WITH FUNCTIONS OR PACKAGES THAT WE DIDN'T LEARN IN CLASS ARE EXPECTED. **</span>
+
+
+# Introduction and motivation:
+
+What is your research question? Why is it interesting? What is the typical understanding of the phenomena you are studying, what is the related literature and how will your study add to or change this understanding? Graphs and/or tables are a must here. Provide a broad idea of your data and external data to support your claims and hypothesis. External data can be from other studies, blogs, surveys, tables. etc. 
+
+GENERAL COMMENTS: 
+Here you can/should add graphs, tables and or images from that related literature, studies, or other sources that can motivate your analysis. 
+It is ok to add links to the sources you mention but is is not the only reference you need to also provide a concise summary of the relevant parts of this studies related to your own. 
+
+
+# The data set 
+
+Briefly describe your data source and data. Why do you think this data is adequate to answer your research question? Do the required manipulations so that your data have self explanatory names and if not, describe those variables shortly. 
+
+Choose only the variables that are part of your analysis. And create the data set with those, do not print your all your dataset into the Rmarkdown document, no need to present the structure only relevent descriptive stats tables. 
+
+If you have issues with your data structure it might be because it is not in the right format. I will upload a handout about using the package tidyr that allows you to improve the change the format of your dataset. Also check the tips of the week section on canvas there are some usefull tips there. Unlikely if using our survey data. 
+
+Discuss in further detail the population of study and any important characteristics of the data. (Graphs and tables of descriptive statistics on the data usually accompany this section.)
+
+**Hide all your data cleaning results but show the code that did it. Use  results='hide' in the knirt options**
+
+
+```{r}
+
+#Here do you data cleaning SHOW THE CODE HIDE THE RESULTS
+```
+
+```{r}
+#Here summary stats and some graphs, SHOW BOTH CODE AND RESULTS
+```
+
+# Analysis confidence intervals and testing
+
+Here you do your analysis of your data, relationships comparisons, t-test of means. maybe some other graphs. Pie charts. 
+
+
+# Conclusion
+
+Briefly summarize what you did for this project and what you found. Discuss any shortcoming of the methods used to gather data, is there anything you will improve? the information itself the sample that you have etc. Did you discover anything that surprised you when you analyzed the data? Do you think the results would have been different if you had bigger sample sizes or a different population? If you had to do the project again, how would you do it differently
+
+
+# References
+(separate from the body of text) Works cited/ references. Full references to the works you cited in the motivation sections. At least 3 references.
